@@ -13,5 +13,5 @@ variable "vpc_cidr" {
 variable "project_name" {
   description = "Project Name"
   type        = string
-  default     = "Terraform-pro"
+  default     = "Terraform-proj"
 }
