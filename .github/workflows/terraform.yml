@@ -1,11 +1,9 @@
 name: "Terraform Hub"
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
+  # Manual trigger ONLY
   workflow_dispatch:
-  # Also runs manually on push to main, but we can comment this out if you ONLY want manual
-  push:
-    branches: ["main"]
+
 
 permissions:
   contents: read
@@ -40,11 +38,18 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -input=false
+        id: plan
+        run: |
+          terraform plan -no-color -input=false > plan.txt
+          echo "### Terraform Plan Output" >> $GITHUB_STEP_SUMMARY
+          echo '```hcl' >> $GITHUB_STEP_SUMMARY
+          cat plan.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ap-south-1
+
 
   terraform-apply:
     name: "Terraform Apply"
