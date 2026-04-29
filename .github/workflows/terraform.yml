@@ -13,7 +13,6 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
-    environment: production
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -40,6 +39,10 @@ jobs:
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
+
+      # Validates the configuration
+      - name: Terraform Validate
+        run: terraform validate
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
