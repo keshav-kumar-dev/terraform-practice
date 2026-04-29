@@ -6,6 +6,14 @@ terraform {
     }
   }
   required_version = ">= 1.0.0"
+
+  # ADD THIS BLOCK
+  backend "s3" {
+    bucket = "keshav-terraform-state-bucket" # Put your bucket name here
+    key    = "state/terraform.tfstate"
+    region = "ap-south-1"
+    # Optional: dynamodb_table = "terraform-lock" (for state locking)
+  }
 }
 
 provider "aws" {
